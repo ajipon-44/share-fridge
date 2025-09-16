@@ -1,9 +1,10 @@
 FROM node:20 AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml ./
+RUN npm i -g pnpm
+RUN pnpm i --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 FROM node:20
 WORKDIR /app
