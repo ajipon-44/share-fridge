@@ -1,5 +1,11 @@
 export default async function Home() {
-  const res = await fetch("http://localhost:8080");
-  const message = await res.json();
-  return <div>{message.message}</div>;
+  try {
+    const res = await fetch(process.env.API_URL!, { cache: "no-store" });
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    const message = await res.json();
+    return <div>{message.message ?? "no api"}</div>;
+  } catch (e) {
+    console.error(e);
+    return <div>APIエラー</div>;
+  }
 }
